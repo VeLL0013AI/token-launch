@@ -12,18 +12,18 @@
             justify-content: center;
             align-items: center;
             flex-direction: column;
-            height: 100vh;
-            background-color: #000;
-            color: #fff;
-            font-family: Courier New, sans-serif;
-            overflow: hidden;
+            height: 100vh; /* Высота окна */
+            background-color: #000; /* Чёрный фон */
+            color: #fff; /* Белый текст */
+            font-family: Courier New, sans-serif; /* Шрифт */
+            overflow: hidden; /* Убираем прокрутку */
         }
         .container {
             text-align: center;
         }
         img {
             max-width: 100%;
-            height: auto;
+            max-height: 80vh; /* Ограничиваем высоту изображения */
             border-radius: 20px;
         }
         h1 {
@@ -42,48 +42,47 @@
         <img src="avatar.jpg" alt="Token Image">
         <h1>Soon you'll see it all</h1>
         <div class="title">Launch in ...</div>
-        <div class="timer" id="timer">15:00</div>
+        <div class="timer" id="timer">60:00</div>
     </div>
+    <script>
+        function startTimer(duration, display) {
+            let timer = duration;
 
-<script>
-    function startTimer(duration, display) {
-        let timer = duration;
-
-        // Проверяем сохранённое время
-        const savedTime = localStorage.getItem('remainingTime');
-        if (savedTime !== null && parseInt(savedTime, 10) > 0) {
-            timer = parseInt(savedTime, 10); // Используем сохранённое время
-        }
-
-        const interval = setInterval(() => {
-            const minutes = Math.floor(timer / 60);
-            const seconds = timer % 60;
-
-            // Обновляем текст таймера
-            display.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-
-            timer--; // Уменьшаем время
-            localStorage.setItem('remainingTime', timer); // Сохраняем оставшееся время
-
-            if (timer < 0) {
-                clearInterval(interval); // Останавливаем таймер
-                localStorage.removeItem('remainingTime'); // Удаляем сохранённое время
-                display.textContent = "Time's up!";
+            // Проверяем сохранённое время
+            const savedTime = localStorage.getItem('remainingTime');
+            if (savedTime !== null && parseInt(savedTime, 10) > 0) {
+                timer = parseInt(savedTime, 10); // Используем сохранённое время
             }
-        }, 1000);
-    }
 
-    window.onload = () => {
-        const sixtyMinutes = 60 * 60; // 60 минут
-        const display = document.getElementById('timer');
+            const interval = setInterval(() => {
+                const minutes = Math.floor(timer / 60);
+                const seconds = timer % 60;
 
-        if (!localStorage.getItem('remainingTime')) {
-            localStorage.setItem('remainingTime', sixtyMinutes); // Сохраняем стартовое время
+                // Обновляем текст таймера
+                display.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+                timer--; // Уменьшаем время
+                localStorage.setItem('remainingTime', timer); // Сохраняем оставшееся время
+
+                if (timer < 0) {
+                    clearInterval(interval); // Останавливаем таймер
+                    localStorage.removeItem('remainingTime'); // Удаляем сохранённое время
+                    display.textContent = "Time's up!";
+                }
+            }, 1000);
         }
 
-        startTimer(sixtyMinutes, display);
-    };
-</script>
+        window.onload = () => {
+            const sixtyMinutes = 60 * 60; // 60 минут
+            const display = document.getElementById('timer');
 
+            // Если таймер не запущен, сохраняем стартовое значение
+            if (!localStorage.getItem('remainingTime')) {
+                localStorage.setItem('remainingTime', sixtyMinutes);
+            }
+
+            startTimer(sixtyMinutes, display);
+        };
+    </script>
 </body>
 </html>
