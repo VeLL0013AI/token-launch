@@ -45,30 +45,42 @@
         <div class="timer" id="timer">15:00</div>
     </div>
 
-    <script>
-        function startTimer(duration, display) {
-            let timer = duration, minutes, seconds;
-            const interval = setInterval(() => {
-                minutes = Math.floor(timer / 60);
-                seconds = timer % 60;
+<script>
+    function startTimer(duration, display) {
+        let timer = duration;
 
-                minutes = minutes < 10 ? '0' + minutes : minutes;
-                seconds = seconds < 10 ? '0' + seconds : seconds;
-
-                display.textContent = minutes + ":" + seconds;
-
-                if (--timer < 0) {
-                    clearInterval(interval);
-                    display.textContent = "Time's up!";
-                }
-            }, 1000);
+        // Проверяем, есть ли сохранённое время
+        const savedTime = localStorage.getItem('remainingTime');
+        if (savedTime && savedTime > 0) {
+            timer = parseInt(savedTime, 10); // Преобразуем из строки в число
         }
 
-        window.onload = () => {
-            const fifteenMinutes = 15 * 60;
-            const display = document.getElementById('timer');
-            startTimer(fifteenMinutes, display);
-        };
-    </script>
+        const interval = setInterval(() => {
+            const minutes = Math.floor(timer / 60);
+            const seconds = timer % 60;
+
+            // Форматируем и отображаем время
+            display.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+            timer--;
+            localStorage.setItem('remainingTime', timer); // Сохраняем оставшееся время
+
+            // Если время закончилось
+            if (timer < 0) {
+                clearInterval(interval);
+                localStorage.removeItem('remainingTime'); // Удаляем сохранённое время
+                display.textContent = "Time's up!";
+            }
+        }, 1000);
+    }
+
+    window.onload = () => {
+        const sixtyMinutes = 60 * 60; // 60 минут
+        const display = document.getElementById('timer');
+
+        startTimer(sixtyMinutes, display);
+    };
+</script>
+
 </body>
 </html>
