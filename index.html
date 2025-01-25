@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Token Launch</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            background-color: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            text-align: center;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 20px;
+        }
+        h1 {
+            font-size: 2rem;
+            margin: 20px 0;
+        }
+        .timer {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="Для%20авы.jpg" alt="Token Image">
+        <h1>Soon you'll see it all</h1>
+        <div class="timer" id="timer">15:00</div>
+    </div>
+
+    <script>
+        function startTimer(duration, display) {
+            let timer = duration, minutes, seconds;
+            const interval = setInterval(() => {
+                minutes = Math.floor(timer / 60);
+                seconds = timer % 60;
+
+                minutes = minutes < 10 ? '0' + minutes : minutes;
+                seconds = seconds < 10 ? '0' + seconds : seconds;
+
+                display.textContent = minutes + ":" + seconds;
+
+                if (--timer < 0) {
+                    clearInterval(interval);
+                    display.textContent = "Time's up!";
+                }
+            }, 1000);
+        }
+
+        window.onload = () => {
+            const fifteenMinutes = 15 * 60;
+            const display = document.getElementById('timer');
+            startTimer(fifteenMinutes, display);
+        };
+    </script>
+</body>
+</html>
